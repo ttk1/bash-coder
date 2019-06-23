@@ -6,7 +6,7 @@ BashでAtCoderやる
 ### 標準入力を受け取るときのTips
 
 #### 入力を変数に代入する
-readコマンドを使う
+`read` コマンドを使う
 
 ```bash
 cat << EOS > >(
@@ -18,6 +18,8 @@ EOS
 ```
 
 #### 入力を配列(Array)として受け取る
+
+##### 基本
 
 ```bash
 cat << EOS > >(
@@ -40,7 +42,7 @@ hoge piyo fuga
 EOS
 ```
 
-算術式と組み合わせる
+##### 算術式と組み合わせる
 
 ```bash
 cat << EOS > >(
@@ -55,10 +57,29 @@ cat << EOS > >(
   done
   echo $sum
 
-  # eval+let+ブレース展開で合計を出す(一行で書けるけど、動作が理解し辛い)
+  # eval+let+ブレース展開で合計を出す
+  # IFS_BACKUP=$IFS # 同一プロセスで動かすときは、IFSをもとに戻す必要あり
   IFS=,;eval let sum=0 sum+={"${a[*]}"}
+  # IFS=$IFS_BACKUP
   echo $sum
 )
 1 2 3
+EOS
+```
+
+##### 複数行ある場合
+
+`cat` だと一気に最後まで読んでしまうので、一行ずつ処理したい場合は `while read` で処理する
+
+```bash
+cat << EOS > >(
+  while read line; do
+    a=($line)
+    echo $((a[0]+a[1]+a[2]))
+  done
+)
+1 2 3
+4 5 6
+7 8 9
 EOS
 ```
