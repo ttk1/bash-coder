@@ -21,10 +21,18 @@ EOS
 
 ```bash
 cat << EOS > >(
-  a=($(cat)) # 配列の初期化
-  echo ${#a[@]} # 配列の長さ
-  echo ${a[@]} # 配列の全体
-  echo ${a[0]} # i番目の要素
+  # 配列の初期化
+  a=($(cat))
+
+  # 配列の長さ
+  echo ${#a[@]}
+
+  # 配列の全体
+  echo ${a[@]}
+  echo ${a[*]}
+
+  # i番目の要素
+  echo ${a[0]}
   echo ${a[1]}
   echo ${a[2]}
 )
@@ -37,12 +45,16 @@ EOS
 ```bash
 cat << EOS > >(
   a=($(cat))
+
+  # 算術式では変数名に$はつけない
   echo $((a[0]+a[1]+a[2]))
+
   # forで合計を出す
   for ((i=0,sum=0;i<${#a[@]};i++)); do
     ((sum+=a[i]))
   done
   echo $sum
+
   # eval+let+ブレース展開で合計を出す(一行で書けるけど、動作が理解し辛い)
   IFS=,;eval let sum=0 sum+={"${a[*]}"}
   echo $sum
