@@ -196,7 +196,7 @@ echo $((1&&0)) # 0
 
 # 否定について
 # できるっぽいこと書いてたけど、なんかエラーになる。
-$ echo $((!1234))
+$ echo $((!10))
 bash: !10: event not found
 ```
 
@@ -276,7 +276,7 @@ done
 
 - ブレース展開についてはここを参考にした: http://takuya-1st.hatenablog.jp/entry/2016/12/21/181839
 
-#### 算術式を使ったループ
+### 算術式を使ったループ
 - ここを参考にした: https://qiita.com/akinomyoga/items/2dd3f341cf15dd9c330b
 
 ```bash
@@ -289,7 +289,7 @@ loop='(i!=10)&&(sum+=i,i++,loop)'
 echo $sum # 45
 ```
 
-##### let+ブレース展開を使った小技
+#### let+ブレース展開を使った小技
 - ここを参考にした: http://takuya-1st.hatenablog.jp/entry/2016/12/21/181839
 
 単純なループならletとブレース展開で比較的簡単に書ける。
