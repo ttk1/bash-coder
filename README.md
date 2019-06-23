@@ -292,7 +292,7 @@ echo $sum # 45
 ##### let+ブレース展開を使った小技
 - ここを参考にした: http://takuya-1st.hatenablog.jp/entry/2016/12/21/181839
 
-`入力を配列(Array)として受け取る` の節にもあるが、単純なループならletとブレース展開で比較的簡単に書ける。
+単純なループならletとブレース展開で比較的簡単に書ける。
 
 ```bash
 let sum=0 sum+={0..9}
@@ -316,7 +316,8 @@ echo $sum # 45
 ## これで "${a[*]}" したときに ',' 区切りになってブレース展開されるようになる
 IFS_BACKUP=$IFS # 同一プロセスで動かすときは、IFSをもとに戻す必要あり
 a=($(seq 0 9))
-IFS=,;eval let sum=0 sum+={"${a[*]}"}
+IFS=,
+eval let sum=0 sum+={"${a[*]}"}
 IFS=$IFS_BACKUP
 echo $sum # 45
 ```
