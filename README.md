@@ -168,7 +168,9 @@ fi
 
 いわゆる三項演算子(条件演算子とも)。
 
-`condition?expr1:expr2` のように書き、`condition` が `true` と評価された場合に `expr1` が実行され、 `false` と評価された場合に `expr2` を実行する。
+`condition?expr1:expr2` のように書く。
+- `condition` が `true` と評価された場合に `expr1` が実行される
+- `condition` が `false` と評価された場合に `expr2` が実行される
 
 bashの算術式では、`0` が `false` と評価され、それ以外は `true` となる。
 
@@ -185,8 +187,8 @@ echo $b # 10
 
 ついでに論理演算子についても。
 
-- `expr1||expr2` は、`expr1` が `true` と判定された場合、 `expr2` は実行されない。
-- `expr1&&expr2` は、`expr1` が `false` と判定された場合、 `expr2` は実行されない。
+- `expr1||expr2` は、`expr1` が `true` と判定された場合、 `expr2` は実行されない
+- `expr1&&expr2` は、`expr1` が `false` と判定された場合、 `expr2` は実行されない
 
 ```bash
 echo $((0||1)) # 1
@@ -201,7 +203,7 @@ bash: !10: event not found
 ```
 
 ちなみにだが、算術式の戻り値は、一番最後の式の評価結果が `false` の時、ステータスコードが1となる。
-bashの `e` オプションを指定し他場合に予期せずプログラムが終了してしまう場合がある。
+bashの `e` オプションを指定した場合、予期せずプログラムが終了してしまう場合がある。
 
 ```bash
 ((a=0))
