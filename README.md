@@ -121,7 +121,7 @@ fi
 
 #### 数値比較
 
-|`((算術式))`|`[[test]]`|
+|`(( ))`|`[[ ]]`|
 |:-:|:-:|
 |`a > b`|`$a -gt $b`|
 |`a >= b`|`$a -ge $b`|
@@ -133,12 +133,12 @@ fi
 ```bash
 a=10 b=20
 
-# [[test]]
+# [[ ]]
 if [[ $a -lt $b ]]; then
   echo 'yeah!'
 fi
 
-# ((算術式))
+# (( ))
 # trueなら1が返る。
 #こっちのほうがぱっと見頭に入ってくる（気がする）し、複合条件を算術式内に書ける。
 if [[ $((a<b)) = 1 ]]; then
@@ -150,10 +150,10 @@ fi
 
 |意味|書き方|
 |:-:|:-:|
-|AND|`<condition> && <condition>`|
-|OR|`<condition> || <condition>`|
-|NOT|`! <condition>`|
-|グループ化|`(<condition>)`|
+|AND| `<condition> && <condition>` |
+|OR| `<condition> \|\| <condition>` |
+|NOT| `! <condition>` |
+|グループ化| `(<condition>)` |
 
 ```bash
 # 例
