@@ -140,8 +140,8 @@ fi
 
 # (( ))
 # trueなら1が返る。
-#こっちのほうがぱっと見頭に入ってくる（気がする）し、複合条件を算術式内に書ける。
-if [[ $((a<b)) = 1 ]]; then
+#こっちのほうがぱっと見頭に入ってくる（気がする）。
+if ((a<b)); then
   echo 'yeah!'
 fi
 ```
@@ -166,8 +166,7 @@ fi
 ### 算術式内で条件分岐
 - こちらを参考にした: https://qiita.com/akinomyoga/items/1e9799d71ce4102c8ab6
 
-いわゆる三項演算子(条件演算子とも)。
-
+#### 三項演算子
 `condition?expr1:expr2` のように書く。
 - `condition` が `true` と評価された場合に `expr1` が実行される
 - `condition` が `false` と評価された場合に `expr2` が実行される
@@ -185,21 +184,23 @@ echo $b # 10
 echo $b # 10
 ```
 
-ついでに論理演算子についても。
+#### 論理演算子
 
-- `expr1||expr2` は、`expr1` が `true` と判定された場合、 `expr2` は実行されない
-- `expr1&&expr2` は、`expr1` が `false` と判定された場合、 `expr2` は実行されない
+- `expr1||expr2`
+  - `expr1` が `true` と判定された場合、 `expr2` は実行されない
+- `expr1&&expr2`
+  - `expr1` が `false` と判定された場合、 `expr2` は実行されない
+- `! expr`
+  - `expr` の `true/false` を入れ替える
+  - `0` なら `1` に、 `0` 以外なら `0` になる
 
 ```bash
 echo $((0||1)) # 1
 echo $((1||0)) # 1
 echo $((0&&1)) # 0
 echo $((1&&0)) # 0
-
-# 否定について
-# できるっぽいこと書いてたけど、なんかエラーになる。
-$ echo $((!10))
-bash: !10: event not found
+echo $((! 0)) # 1
+echo $((! 123)) # 0
 ```
 
 ちなみにだが、算術式の戻り値は、一番最後の式の評価結果が `false` の時、ステータスコードが1となる。
@@ -208,6 +209,43 @@ bashの `e` オプションを指定した場合、予期せずプログラム�
 ```bash
 ((a=0))
 echo $? # 1
+```
+
+### コマンドの条件分岐
+
+複数のコマンドを `&&` もしくは `||` でつなぐことで、前のコマンドの終了ステータスに応じて実行したり/しなかったりを制御できる。
+
+- `COMMAND1 && COMMAND2`
+  - `COMMAND1` の終了コードが0(正常終了)の時に限り、 `COMMAND2` を実行する
+- `COMMAND1 || COMMAND2`
+  - `COMMAND1` の終了コードが0以外(異常終了)の時に、 `COMMAND2` を実行する
+- `! COMMAND1`
+  - `!` を前につけると、終了コードの正常/異常を反転させる
+  - `0` なら `1` に、 `0` 以外なら `0` になる
+- `true`
+  - 常に終了コードが `0` のコマンド
+- `false`
+  - 常に終了コードが `1` のコマンド
+
+```bash
+true; echo $? # 0
+false; echo $? # 1
+! true; echo $? # 1
+! false; echo $? # 0
+true && echo 'OK' # OK
+true || echo 'OK' # ''
+false && echo 'OK' # ''
+false || echo 'OK' # OK
+```
+
+`&&` 、 `||` は左結合なので、次のように書くと、三項演算子として振る舞う。
+
+```bash
+true && echo 'OK' || echo 'NG' # OK
+(true && echo 'OK') || echo 'NG' # 同上
+
+false && echo 'OK' || echo 'NG' # NG
+(false && echo 'OK') || echo 'NG' # 同上
 ```
 
 ### ループ
@@ -221,6 +259,12 @@ while [[ $count -lt 10 ]]; do
   echo count=$count
   ((count++))
 done
+# 算術式を使うと
+count=0
+while ((count<10)); do
+  echo count=$count
+  ((count++))
+done
 
 # 無限ループ
 # while :; do でもよい
@@ -231,6 +275,27 @@ while true; do
   if [[ $count -eq 10 ]]; then
     break
   fi
+done
+
+# COMMANDの終了コードが0の間だけループ
+while COMMAND; do
+  echo 'まだ大丈夫'
+done
+```
+
+#### until
+
+```bash
+# whileと条件の扱いが逆
+# COMMANDの終了コードが0になるまでループ
+until COMMAND; do
+  echo 'まだかな？'
+done
+
+# リトライ回数の上限を設定
+count=0
+until COMMAND || ((count++,count>=10)); do
+  echo 'まだかな？'
 done
 ```
 
@@ -275,8 +340,6 @@ for i in $(seq 0 2 10); do
   echo i=$i
 done
 ```
-
-- ブレース展開についてはここを参考にした: http://takuya-1st.hatenablog.jp/entry/2016/12/21/181839
 
 ### 算術式を使ったループ
 - ここを参考にした: https://qiita.com/akinomyoga/items/2dd3f341cf15dd9c330b
