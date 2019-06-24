@@ -19,7 +19,7 @@ function LCM() {
 # 難読化バージョン
 function GCD() {
   loop='n?(tmp=n,n=m%n,m=tmp,loop):m'
-  echo $((($1>$2)?(m=$1,n=$2):(m=$2,n=$1),loop))
+  echo $((m=$1>$2?$1:$2,n=$1<$2?$1:$2,loop))
 }
 
 function LCM() {
