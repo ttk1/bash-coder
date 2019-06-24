@@ -341,7 +341,7 @@ for i in $(seq 0 2 10); do
 done
 ```
 
-### 算術式を使ったループ
+### 算術式を使った再帰
 - ここを参考にした: https://qiita.com/akinomyoga/items/2dd3f341cf15dd9c330b
 
 ```bash
