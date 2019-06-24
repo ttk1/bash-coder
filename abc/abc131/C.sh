@@ -4,19 +4,12 @@
 #### ここから ####
 
 function GCD() {
-  m=$1 n=$2
-  if [[ $((m>=n)) = 0 ]]; then
-    ((tmp=n,n=m,m=tmp))
-  fi
-  while [[ $((n==0)) = 0 ]]; do
-    ((tmp=n,n=m%n,m=tmp))
-  done
-  echo $m
+  loop='n?(tmp=n,n=m%n,m=tmp,loop):m'
+  echo $((($1>$2)?(m=$1,n=$2):(m=$2,n=$1),loop))
 }
 
 function LCM() {
-  m=$1 n=$2
-  echo $(((m*n)/$(GCD $m $n)))
+  echo $((($1*$2)/$(GCD $1 $2)))
 }
 
 read A B C D
@@ -29,14 +22,14 @@ exit 0
 
 #### ここまで ####
 
-cat << EOS | ./C.sh
+cat << EOS | ./C.sh # 2
 4 9 2 3
 EOS
 
-cat << EOS | ./C.sh
+cat << EOS | ./C.sh # 23
 10 40 6 8
 EOS
 
-cat << EOS | ./C.sh
+cat << EOS | ./C.sh # 532105071133627368
 314159265358979323 846264338327950288 419716939 937510582
 EOS
