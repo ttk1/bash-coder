@@ -26,9 +26,9 @@ exit 0
 
 # TLE
 read N K
-A=($(cat -))
+A=($(cat))
 for ((sum=A[0],count=0,i=0,j=0;i<N&&(sum>=K||j<N-1);)); do
-  if [[ $((sum>=K)) = 1 ]]; then
+  if ((sum>=K)); then
     ((count+=N-j,sum-=A[i],i++))
   else
     ((j++,sum+=A[j]))
