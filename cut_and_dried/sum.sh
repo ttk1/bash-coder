@@ -34,3 +34,7 @@ function sum() {
 
 # なんとか動く（while版よりちょっと速い気がする）
 sum $(seq 10000) # 50005000
+
+# awk版
+# 圧倒的に速い
+seq 10000 | awk 'BEGIN{sum=0}{sum+=$1}END{print sum}'
