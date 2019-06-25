@@ -1,8 +1,8 @@
 # 再帰版
 function sum() {
   local -r arr=($@)
-  local -r loop="(i<${#arr[@]})?(sum+=arr[i],i++,loop):sum"
-  echo $((sum=0,i=0,loop))
+  local -r r="(i<${#arr[@]})?(sum+=arr[i],i++,r):sum"
+  echo $((sum=0,i=0,r))
 }
 sum 1 2 3 4 # 10
 # 数が多いと再帰の深さ上限に引っかかる

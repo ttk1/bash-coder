@@ -356,13 +356,8 @@ done
 - ここを参考にした: https://qiita.com/akinomyoga/items/2dd3f341cf15dd9c330b
 
 ```bash
-loop='(i!=10)&&(sum+=i,i++,loop)'
-((
-  sum=0,
-  i=0,
-  loop
-))
-echo $sum # 45
+recursion='i<10?sum+=i,i++,recursion:sum'
+echo $((sum=0,i=0,recursion)) # 45
 ```
 
 #### let+ブレース展開を使った小技
@@ -412,8 +407,8 @@ echo $a $b $c # 10 20 30
 もちろん再帰も書ける。
 
 ```bash
-loop='(i<10)?sum+=i,i++,loop:sum'
-let sum=0 i=0 loop
+recursion='(i<10)?sum+=i,i++,recursion:sum'
+let sum=0 i=0 recursion
 echo $sum # 45
 ```
 
@@ -435,9 +430,9 @@ hoge='hoge'; echo $hoge # 6
 hoge=1.5
 
 # 再帰（ちょっとわかりにくいけど動く）
-loop='(i<10)?sum+=i,i++,loop:sum'
+recursion='(i<10)?sum+=i,i++,recursion:sum'
 declare -i sum=0 i=0
-sum=$loop
+sum=$recursion
 echo $sum # 45
 ```
 
