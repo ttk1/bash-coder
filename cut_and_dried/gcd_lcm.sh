@@ -25,3 +25,9 @@ function GCD() {
 function LCM() {
   echo $((($1*$2)/$(GCD $1 $2)))
 }
+
+# tmp無しバージョン（余計長くなった）
+function GCD() {
+  local -r r='n?n=n^m,m=n^m,n=(n^m)%m,r:m'
+  echo $((m=$1>$2?$1:$2,n=$1^$2^m,r))
+}
