@@ -9,7 +9,7 @@ sum 1 2 3 4 # 10
 # sum $(seq 10000)
 # bash: i: expression recursion level exceeded (error token is "i")
 
-# ループ版
+# whileループ版
 function sum() {
   local -i count=0
   while (($#>0)); do
@@ -19,5 +19,18 @@ function sum() {
   echo $count
 }
 
-# ループ版だとなんとか動く（これ以上の長さは厳しそう）
+# なんとか動く（これ以上の長さは厳しそう）
+sum $(seq 10000) # 50005000
+
+# for-inループ版（while read）
+function sum() {
+  local -i count=0
+  for i in "$@"; do
+    ((count+=$i))
+    shift
+  done
+  echo $count
+}
+
+# なんとか動く（while版よりちょっと速い気がする）
 sum $(seq 10000) # 50005000
