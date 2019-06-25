@@ -325,7 +325,7 @@ done
 
 # for-in+配列
 a=({0..9})
-for i in ${a[@]}; do
+for i in "${a[@]}"; do
   echo i=$i
 done
 
