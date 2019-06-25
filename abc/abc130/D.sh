@@ -36,7 +36,7 @@ for ((sum=A[0],count=0,i=0,j=0;i<N&&(sum>=K||j<N-1);)); do
 done
 echo $count
 
-# RE(再帰だと厳しい)
+# RE (再帰だと厳しい)
 read N K
 A=($(cat))
 loop='(i<N&&(sum>=K||j<N-1))?((sum>=K)?(count+=N-j,sum-=A[i],i++):(j++,sum+=A[j]),loop):count'
@@ -47,7 +47,7 @@ echo $((sum=A[0],count=0,i=0,j=0,loop))
 read N K
 cat|
 tr ' ' '\n'|
-awk -M -v N=$N -v K=$K '
+awk --bignum -v N=$N -v K=$K '
 BEGIN{i=0}
 {A[i]=$1;i++;}
 END{
