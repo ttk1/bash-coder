@@ -248,6 +248,17 @@ false && echo 'OK' || echo 'NG' # NG
 (false && echo 'OK') || echo 'NG' # 同上
 ```
 
+`set -u` してたらエラーになるけど、デフォルト値の設定とかも書ける
+
+```bash
+hoge=$([[ $hoge ]] && echo $hoge || echo 'detault')
+echo $hoge # default
+
+hoge='hoge'
+hoge=$([[ $hoge ]] && echo $hoge || echo 'detault')
+echo $hoge # hoge
+```
+
 ### ループ
 
 #### while
@@ -388,4 +399,62 @@ echo $sum # 45
 ```
 
 ### 算術式関係
-そのうちまとめる
+#### let
+letコマンドの後に続けて式を書くと、`(( ))` で括らなくても数値として式が評価される。
+カンマ区切りじゃなくても式として評価されるので、ブレース展開と組み合わせることができる。
+下に書いてある `declare -i` 、 `local -i` でも大体同じことができる。
+
+```bash
+let a=10,b=20 c=30
+echo $a $b $c # 10 20 30
+```
+
+もちろん再帰も書ける。
+
+```bash
+loop='(i<10)?sum+=i,i++,loop:sum'
+let sum=0 i=0 loop
+echo $sum # 45
+```
+
+#### `declare -i`
+`declare -i` で定義した変数は整数値として扱われる。
+算術式を表す `(())` はなくても式がちゃんと評価される。
+
+```bash
+declare -i hoge=2**62 piyo=2**63
+echo $hoge # 4611686018427387904
+echo $piyo # -9223372036854775808
+hoge+=piyo; echo $hoge # -4611686018427387904
+hoge=1+2+3; echo $hoge # 6
+
+# これはエラーにならないが、代入されない
+hoge='hoge'; echo $hoge # 6
+
+# これはエラーになる。代入もされない。
+hoge=1.5
+
+# 再帰（ちょっとわかりにくいけど動く）
+loop='(i<10)?sum+=i,i++,loop:sum'
+declare -i sum=0 i=0
+sum=$loop
+echo $sum # 45
+```
+
+#### `declare` と `local` について
+（※ちゃんと調べてないので間違ってるかも）
+
+`local` は関数内でしか定義できない。
+それ以外では、この二つは同じように振る舞う（と思う）。
+どちらも、関数内で定義すればスコープは関数内で閉じる。
+
+```bash
+local -i a=0 # エラー
+
+function hoge() {
+  local -i a=1+2+3
+  declare -i b=1+2+3
+}
+hoge
+echo $a $b # 何も表示されない
+```

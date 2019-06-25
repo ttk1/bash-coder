@@ -4,7 +4,7 @@
 #### ここから ####
 
 function GCD() {
-  loop='n?(tmp=n,n=m%n,m=tmp,loop):m'
+  loop='n?tmp=n,n=m%n,m=tmp,loop:m'
   echo $((m=$1>$2?$1:$2,n=$1^$2^m,loop))
 }
 
